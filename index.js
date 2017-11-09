@@ -81,7 +81,7 @@ app.post('/', function(req, response) {
         return;
     }
     request({
-        url: process.env.POSTBACK_URL,
+        url: req.body.response_url,
         json: payloadOption,
         method: 'POST'
     }, function (error) {
