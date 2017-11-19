@@ -21,7 +21,7 @@ function getUsageHelp(commandName) {
 
     var text = 'Expected usage: \n' +
         commandName + ' help -- Displays help message.\n' +
-        createSample('#channel') + " -- Sends to the person's channel.\n"
+        createSample('#channel') + " -- Sends to the person's channel.\n";
 
     return text;
 }
@@ -80,14 +80,14 @@ function createResponsePayload(requestBody) {
 }
 
 app.post('/', function(req, response) {
-    var {text, url} = createResponsePayload(req.body);
+    var payloadOption = createResponsePayload(req.body);
     if (payloadOption.error) {
         response.end(payloadOption.error);
         return;
     }
     request({
-        url: url,
-        json: { text },
+        url: payloadOption.url,
+        json: { text: payloadOption.text },
         method: 'POST'
     }, function (error) {
         if(error) {
