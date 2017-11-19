@@ -21,17 +21,14 @@ function getUsageHelp(commandName) {
 
     var text = 'Expected usage: \n' +
         commandName + ' help -- Displays help message.\n' +
-        createSample('@user') + ' -- Sends to the specified user.\n' +
-        createSample('#channel') + ' -- Sends to the specified public channel.\n' +
-        createSample('group') + ' -- Sends to the specified private group.\n' +
-        createSample(':here') + ' -- Sends to the current group/channel/DM where you type this command.';
+        createSample('#channel') + " -- Sends to the person's channel.\n"
 
     return text;
 }
 
 function getFullHelp(commandName) {
     var text =
-        'Allows to send anonymous messages to users, channels and groups.\n' +
+        'Allows to send anonymous messages to channels.\n' +
         'The most convenient and safe way is to open up a conversation with slackbot in Slack and type the commands there, so that nobody detects that you are typing and you don\'t accidentally reveal yourself by typing an invalid command.\n' +
         'Messages and authors are not stored, and the sources are available at <https://github.com/TargetProcess/slack-anonymous>.\n' +
         '\n' +
@@ -41,6 +38,20 @@ function getFullHelp(commandName) {
 }
 
 function createResponsePayload(requestBody) {
+    
+    var hookUrls = {
+        "chinh": process.env.CHINH_URL,
+        "holland": process.env.HOLLAND_URL,
+        "gaby": process.env.GABY_URL,
+        "louis": process.env.LOUIS_URL,
+        "norman": process.env.NORMAN_URL,
+        "genevieve": process.env.GENEVIEVE_URL,
+        "jed": process.env.JED_URL,
+        "natalie": process.env.NATALIE_URL,
+        "peter": process.env.PETER_URL,
+        "jana": process.env.JANA_URL
+    };
+
     if (!requestBody) {
         return createError('Request is empty');
     }
@@ -52,6 +63,7 @@ function createResponsePayload(requestBody) {
         return createError(getFullHelp(command));
     }
 
+    
     var splitted = text.split(" ");
     if (splitted.length <= 1) {
         return createError(getUsageHelp(command));
@@ -61,28 +73,21 @@ function createResponsePayload(requestBody) {
     var remainingText = splitted.slice(1).join(' ');
     remainingText = 'Someone said "' + remainingText + '"';
 
-    if (target === ':here') {
-        return {
-            channel: requestBody.channel_id,
-            text: remainingText
-        };
-    }
-
     return {
-        channel: target,
-        text: remainingText
+        text: remainingText,
+        url: hookUrls[target]
     };
 }
 
 app.post('/', function(req, response) {
-    var payloadOption = createResponsePayload(req.body);
+    var {text, url} = createResponsePayload(req.body);
     if (payloadOption.error) {
         response.end(payloadOption.error);
         return;
     }
     request({
-        url: req.body.response_url,
-        json: payloadOption,
+        url: url,
+        json: { text },
         method: 'POST'
     }, function (error) {
         if(error) {
