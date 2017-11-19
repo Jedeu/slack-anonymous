@@ -6,7 +6,8 @@ var request = require('request');
 app.set('port', (process.env.PORT || 5000));
 
 app.use(express.static(__dirname + '/public'));
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 function createError(errorMessage) {
     return {
@@ -40,16 +41,16 @@ function getFullHelp(commandName) {
 function createResponsePayload(requestBody) {
     
     var hookUrls = {
-        "chinh": process.env.CHINH_URL,
-        "holland": process.env.HOLLAND_URL,
-        "gaby": process.env.GABY_URL,
-        "louis": process.env.LOUIS_URL,
-        "norman": process.env.NORMAN_URL,
-        "genevieve": process.env.GENEVIEVE_URL,
-        "jed": process.env.JED_URL,
-        "natalie": process.env.NATALIE_URL,
-        "peter": process.env.PETER_URL,
-        "jana": process.env.JANA_URL
+        "#chinh": process.env.CHINH_URL,
+        "#holland": process.env.HOLLAND_URL,
+        "#gaby": process.env.GABY_URL,
+        "#louis": process.env.LOUIS_URL,
+        "#norman": process.env.NORMAN_URL,
+        "#genevieve": process.env.GENEVIEVE_URL,
+        "#jed": process.env.JED_URL,
+        "#natalie": process.env.NATALIE_URL,
+        "#peter": process.env.PETER_URL,
+        "#jana": process.env.JANA_URL
     };
 
     if (!requestBody) {
