@@ -77,6 +77,8 @@ function createResponsePayload(requestBody) {
     var remainingText = splitted.slice(1).join(' ');
     remainingText = 'Someone said "' + remainingText + '"';
     
+    console.log(target);
+    
     return {
         target: target,
         text: remainingText,
