@@ -75,6 +75,7 @@ function createResponsePayload(requestBody) {
     remainingText = 'Someone said "' + remainingText + '"';
 
     return {
+        target,
         text: remainingText,
         url: hookUrls[target]
     };
@@ -90,11 +91,12 @@ app.post('/', function(req, response) {
         url: payloadOption.url,
         json: { text: payloadOption.text },
         method: 'POST'
-    }, function (error) {
-        if(error) {
-            response.end('Unable to post your anonymous message: ' + JSON.stringify(error));
+    }, function (err) {
+        if(err) {
+            console.error(err);
+            response.end('Unable to post your anonymous message: ' + JSON.stringify(err));
         } else {
-            response.end('Delivered! :cop:');
+            response.end(`Successfully delivered your message to ${payloadOption.target}!`);
         }
 
     });
