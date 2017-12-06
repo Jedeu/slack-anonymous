@@ -75,7 +75,7 @@ function createResponsePayload(requestBody) {
     remainingText = 'Someone said "' + remainingText + '"';
 
     return {
-        target,
+        target: target,
         text: remainingText,
         url: hookUrls[target]
     };
