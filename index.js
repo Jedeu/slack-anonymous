@@ -71,12 +71,12 @@ function createResponsePayload(requestBody) {
     }
 
     var target = splitted[0];
+    if (target.indexOf("<") >= 0) {
+        target = target.substring(target.indexOf("|") + 1, target.indexOf(">"));   
+    }
     var remainingText = splitted.slice(1).join(' ');
     remainingText = 'Someone said "' + remainingText + '"';
     
-    console.log("target is ", target);
-    console.log("url is ", hookUrls[target]);
-
     return {
         target: target,
         text: remainingText,
@@ -90,7 +90,7 @@ app.post('/', function(req, response) {
         response.end(payloadOption.error);
         return;
     }
-    console.log(payloadOption);
+
     request({
         url: payloadOption.url,
         json: { text: payloadOption.text },
