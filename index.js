@@ -72,12 +72,10 @@ function createResponsePayload(requestBody) {
 
     var target = splitted[0];
     if (target.indexOf("<") >= 0) {
-        target = target.substring(target.indexOf("|") + 1, target.indexOf(">"));   
+        target = "#" + target.substring(target.indexOf("|") + 1, target.indexOf(">"));   
     }
     var remainingText = splitted.slice(1).join(' ');
     remainingText = 'Someone said "' + remainingText + '"';
-    
-    console.log(target);
     
     return {
         target: target,
