@@ -96,7 +96,7 @@ app.post('/', function(req, response) {
             console.error(err);
             response.end('Unable to post your anonymous message: ' + JSON.stringify(err));
         } else {
-            response.end(`Successfully delivered your message to ${payloadOption.target}!`);
+            response.end('Successfully delivered your message to ' + payloadOption.target);
         }
 
     });
